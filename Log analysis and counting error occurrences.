@@ -1,0 +1,763 @@
+Module 1 – Arrays (15 problems)
+Second Largest Element
+Leaders in Array
+Move Zeros
+Rotate Array
+Kadane's Algorithm
+Merge Sorted Arrays
+Missing Number
+Maximum Difference
+Frequency Count
+Majority Element
+Two Sum
+Prefix Sum
+Sliding Window
+Maximum Subarray
+Dutch National Flag (Sort 0s, 1s, 2s)
+
+Module 2 – Strings (15 problems)
+Reverse String
+Palindrome
+Anagram
+Character Frequency
+First Non-Repeating Character
+Remove Duplicates
+Longest Common Prefix
+Longest Palindrome
+String Compression
+Reverse Words
+Count Vowels
+etc.
+
+Module 3 – Numbers (15 problems)
+Prime
+Armstrong
+Fibonacci
+GCD
+LCM
+Factorial
+Perfect Number
+Strong Number
+Power
+Decimal to Binary
+etc.
+
+Module 4 – Searching & Sorting (20 problems)
+Module 5 – HashMap (15 problems)
+Module 6 – Stack & Queue (20 problems)
+Module 7 – Trees (20 problems)
+Module 8 – Graphs (20 problems)
+Module 9 – Dynamic Programming (20 problems)
+Module 10 – Previous TCS Digital Questions (20 problems)
+
+This would cover 150+ interview-level coding problems commonly seen in TCS Digital/Prime preparation.
+
+
+Sliding Window: Monitoring CPU, memory, or network metrics over a time window.
+Frequency Count: Log analysis and counting error occurrences.
+Two Sum / Hash Maps: Fast lookups in configuration management.
+Merge Sorted Arrays: Merging sorted log streams from multiple servers.
+Kadane's Algorithm: Finding periods of maximum resource utilization.
+Prefix Sum: Efficient cumulative metrics and analytics.
+
+
+
+Below is an interview-focused explanation of each problem, including **why it matters**, the **optimal approach**, the **time complexity**, and a **real-world DevOps/industry use case**.
+
+---
+
+# 1. Second Largest Element
+
+### Problem
+
+Find the second largest distinct element in an array.
+
+**Input**
+
+```
+10 20 5 8 15
+```
+
+**Output**
+
+```
+15
+```
+
+### Brute Force
+
+* Sort the array.
+* Pick second last distinct element.
+
+Time Complexity:
+
+```
+O(n log n)
+```
+
+### Optimal Approach
+
+Traverse the array once while maintaining:
+
+* largest
+* secondLargest
+
+Algorithm:
+
+```
+largest = -∞
+second = -∞
+
+For each element:
+    if element > largest
+        second = largest
+        largest = element
+    else if element > second && element != largest
+        second = element
+```
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+### Industry Example
+
+Finding the **second highest CPU utilization** among servers after excluding the busiest server.
+
+---
+
+# 2. Leaders in Array
+
+### Problem
+
+An element is a leader if all elements to its right are smaller.
+
+Example
+
+```
+16 17 4 3 5 2
+```
+
+Output
+
+```
+17 5 2
+```
+
+### Brute Force
+
+For every element
+
+Compare with every element on right.
+
+Time
+
+```
+O(n²)
+```
+
+### Optimal
+
+Traverse from right.
+
+Keep maximum seen so far.
+
+If current > maximum
+
+Leader.
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+### Industry Example
+
+Highest response time remaining in a stream of monitoring data.
+
+---
+
+# 3. Move Zeros
+
+Example
+
+```
+0 1 0 3 12
+```
+
+Output
+
+```
+1 3 12 0 0
+```
+
+### Optimal
+
+Maintain pointer
+
+```
+index = 0
+
+For every non-zero
+
+swap(arr[index], arr[i])
+
+index++
+```
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+### DevOps Example
+
+Move inactive containers/logs to the end while preserving active ones.
+
+---
+
+# 4. Rotate Array
+
+Example
+
+```
+1 2 3 4 5 6 7
+
+k = 3
+```
+
+Output
+
+```
+5 6 7 1 2 3 4
+```
+
+### Best Method
+
+Reverse
+
+```
+Reverse whole array
+
+Reverse first k
+
+Reverse remaining
+```
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+### Industry Example
+
+Rotating log files.
+
+Rotating server schedules.
+
+---
+
+# 5. Kadane's Algorithm
+
+Find maximum sum contiguous subarray.
+
+Example
+
+```
+-2 1 -3 4 -1 2 1 -5 4
+```
+
+Answer
+
+```
+6
+```
+
+Subarray
+
+```
+4 -1 2 1
+```
+
+### Algorithm
+
+```
+current = 0
+
+maximum = -∞
+
+for every element
+
+current += element
+
+maximum = max(maximum,current)
+
+if current<0
+
+current=0
+```
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+### Industry Example
+
+Maximum profit period.
+
+Maximum server traffic period.
+
+Maximum sales duration.
+
+---
+
+# 6. Merge Sorted Arrays
+
+Example
+
+```
+1 3 5
+
+2 4 6
+```
+
+Output
+
+```
+1 2 3 4 5 6
+```
+
+### Two Pointer Technique
+
+Compare
+
+Take smaller
+
+Move pointer
+
+Time
+
+```
+O(n+m)
+```
+
+Space
+
+```
+O(n+m)
+```
+
+### DevOps Example
+
+Merge logs coming from two servers.
+
+---
+
+# 7. Missing Number
+
+Example
+
+```
+1 2 4 5
+
+Output
+
+3
+```
+
+### Formula
+
+Expected
+
+```
+n(n+1)/2
+```
+
+Subtract actual sum.
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+Alternative
+
+Use XOR.
+
+---
+
+# 8. Maximum Difference
+
+Example
+
+```
+7 1 5 3 6 4
+```
+
+Answer
+
+```
+5
+```
+
+Buy at
+
+```
+1
+```
+
+Sell at
+
+```
+6
+```
+
+Algorithm
+
+Maintain
+
+```
+minimum
+
+maximum profit
+```
+
+Time
+
+```
+O(n)
+```
+
+### Industry Example
+
+Maximum stock gain.
+
+Maximum increase in cloud resource utilization.
+
+---
+
+# 9. Frequency Count
+
+Example
+
+```
+1 2 1 3 2 1
+```
+
+Output
+
+```
+1 → 3
+
+2 → 2
+
+3 → 1
+```
+
+### Best
+
+HashMap
+
+Time
+
+```
+O(n)
+```
+
+### Industry Example
+
+Error log frequency.
+
+User request frequency.
+
+Word count.
+
+---
+
+# 10. Majority Element
+
+Appears
+
+```
+> n/2
+```
+
+times.
+
+Example
+
+```
+2 2 1 1 2 2 2
+```
+
+Output
+
+```
+2
+```
+
+Best Algorithm
+
+Moore Voting
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+Very common interview question.
+
+---
+
+# 11. Two Sum
+
+Example
+
+```
+2 7 11 15
+
+Target
+
+9
+```
+
+Output
+
+```
+0 1
+```
+
+Use HashMap.
+
+Time
+
+```
+O(n)
+```
+
+### Industry Example
+
+Fast lookup tables and cache indexing.
+
+---
+
+# 12. Prefix Sum
+
+Create cumulative sum.
+
+Example
+
+```
+2 4 6 8
+```
+
+Prefix
+
+```
+2
+
+6
+
+12
+
+20
+```
+
+Useful for answering
+
+```
+Range Sum Query
+```
+
+in
+
+```
+O(1)
+```
+
+---
+
+# 13. Sliding Window
+
+Example
+
+Maximum sum
+
+```
+Window Size =3
+
+2 1 5 1 3 2
+```
+
+Maximum
+
+```
+9
+```
+
+Instead of recomputing
+
+```
+window
+
+remove first
+
+add next
+```
+
+Time
+
+```
+O(n)
+```
+
+### DevOps Example
+
+Average CPU usage over the last 5 minutes.
+
+Average network traffic over the last 10 samples.
+
+---
+
+# 14. Maximum Subarray
+
+This is solved using **Kadane's Algorithm**.
+
+Interviewers often ask it under both names.
+
+---
+
+# 15. Dutch National Flag Algorithm
+
+Input
+
+```
+2 0 2 1 1 0
+```
+
+Output
+
+```
+0 0 1 1 2 2
+```
+
+Pointers
+
+```
+low
+
+mid
+
+high
+```
+
+Rules
+
+```
+0
+
+swap(low,mid)
+
+low++
+
+mid++
+
+1
+
+mid++
+
+2
+
+swap(mid,high)
+
+high--
+```
+
+Time
+
+```
+O(n)
+```
+
+Space
+
+```
+O(1)
+```
+
+### Industry Example
+
+Three-way classification such as:
+
+* Low, Medium, High priority tickets.
+* Healthy, Warning, Critical server states.
+* Development, Testing, Production deployment queues.
+
+---
+
+## Interview Tips
+
+* Always explain the **brute-force solution first**, then optimize it.
+* State the **time and space complexity** before writing code.
+* Mention the **data structure** being used (e.g., `HashMap`, two pointers, sliding window).
+* Explain **why** your solution is optimal.
+* Test your code with edge cases such as empty arrays, duplicates, and negative values.
+
+These 15 problems form the core of array-based coding interviews and are frequently asked in 
+TCS Digital/Prime, Infosys, Accenture, Capgemini, Cognizant, Wipro, Deloitte, and many product company interviews.
+
+
+
+
+
