@@ -1,0 +1,2444 @@
+ **core AWS Cloud Engineer / DevOps / SysOps** syllabus 
+companies like **TCS, Infosys, Accenture, Cognizant, Capgemini, Wipro, Deloitte, IBM, HCL, LTIMindtree, Amazon, and startups**.
+
+
+* ✅ Concept
+* ✅ Real industry use case
+* ✅ AWS CLI commands
+* ✅ Linux Bash commands
+* ✅ SQL (where applicable)
+
+---
+
+# 1. Amazon EC2 (Elastic Compute Cloud)
+
+
+
+EC2 ek **virtual server** hai jo AWS cloud mein run hota hai.
+
+Example:
+
+Instead of buying a physical computer
+
+```
+Office Server
+```
+
+You rent
+
+```
+AWS EC2
+```
+
+Industry Example
+
+```
+Customer
+      |
+      |
+Internet
+      |
+      |
+EC2
+      |
+Application Running
+```
+
+Companies host
+
+* Java
+* Spring Boot
+* NodeJS
+* Python
+* PHP
+
+applications on EC2.
+
+---
+
+## Create EC2
+
+AWS CLI
+
+```bash
+aws ec2 run-instances \
+--image-id ami-123456 \
+--instance-type t2.micro \
+--key-name mykey
+```
+
+---
+
+## List EC2
+
+```bash
+aws ec2 describe-instances
+```
+
+---
+
+## Stop EC2
+
+```bash
+aws ec2 stop-instances \
+--instance-ids i-123456789
+```
+
+---
+
+## Linux Commands
+
+SSH into EC2
+
+```bash
+ssh -i key.pem ec2-user@54.22.xx.xx
+```
+
+Check RAM
+
+```bash
+free -h
+```
+
+CPU
+
+```bash
+top
+```
+
+Disk
+
+```bash
+df -h
+```
+
+---
+
+# 2. Amazon VPC
+
+## Hinglish
+
+VPC means
+
+Private Network
+
+Imagine
+
+```
+Office Building
+
+↓
+
+Rooms
+
+↓
+
+Departments
+```
+
+AWS
+
+```
+VPC
+
+↓
+
+Subnets
+
+↓
+
+EC2
+```
+
+---
+
+Create VPC
+
+```bash
+aws ec2 create-vpc \
+--cidr-block 10.0.0.0/16
+```
+
+---
+
+Create subnet
+
+```bash
+aws ec2 create-subnet \
+--vpc-id vpc-123 \
+--cidr-block 10.0.1.0/24
+```
+
+---
+
+# 3. Amazon S3
+
+Object Storage
+
+Industry stores
+
+* Images
+* Videos
+* PDFs
+* Logs
+* Backups
+
+Example
+
+```
+Instagram Images
+
+↓
+
+Amazon S3
+```
+
+---
+
+Create bucket
+
+```bash
+aws s3 mb s3://company-data
+```
+
+Upload
+
+```bash
+aws s3 cp image.jpg s3://company-data
+```
+
+Download
+
+```bash
+aws s3 cp s3://company-data/image.jpg .
+```
+
+List
+
+```bash
+aws s3 ls
+```
+
+---
+
+# Bash Script Backup to S3
+
+```bash
+#!/bin/bash
+
+tar -czf backup.tar.gz /home/ec2-user/project
+
+aws s3 cp backup.tar.gz s3://company-backup/
+```
+
+Industry uses this daily.
+
+---
+
+# 4. Amazon EBS
+
+Hard Disk for EC2
+
+```
+Laptop
+
+↓
+
+SSD
+
+↓
+
+AWS
+
+↓
+
+EBS
+```
+
+Snapshot
+
+```bash
+aws ec2 create-snapshot \
+--volume-id vol-12345
+```
+
+---
+
+# 5. Amazon EFS
+
+Shared File Storage
+
+```
+EC2-1
+
+     |
+
+EFS
+
+     |
+
+EC2-2
+```
+
+Useful for
+
+* WordPress
+* PHP
+* Shared Logs
+
+Mount
+
+Linux
+
+```bash
+sudo mount -t efs fs-123:/ /data
+```
+
+---
+
+# 6. Load Balancer
+
+Suppose
+
+10000 users
+
+Without LB
+
+```
+Users
+
+↓
+
+One Server
+
+↓
+
+Crash
+```
+
+With ALB
+
+```
+Users
+
+↓
+
+ALB
+
+↓
+
+EC2 EC2 EC2
+```
+
+Create
+
+```bash
+aws elbv2 create-load-balancer
+```
+
+---
+
+# 7. Auto Scaling
+
+Automatically
+
+Start new EC2
+
+When traffic increases.
+
+Example
+
+```
+Morning
+
+2 EC2
+
+↓
+
+Night Sale
+
+10 EC2
+```
+
+CLI
+
+```bash
+aws autoscaling create-auto-scaling-group
+```
+
+---
+
+# 8. Amazon RDS
+
+Managed Database
+
+Supports
+
+* MySQL
+* PostgreSQL
+* SQL Server
+* Oracle
+
+Connect
+
+```bash
+mysql -h endpoint \
+-u admin \
+-p
+```
+
+SQL
+
+Create Database
+
+```sql
+CREATE DATABASE company;
+```
+
+Create Table
+
+```sql
+CREATE TABLE employee
+(
+id INT,
+name VARCHAR(50)
+);
+```
+
+Insert
+
+```sql
+INSERT INTO employee
+VALUES
+(1,'Rahul');
+```
+
+Read
+
+```sql
+SELECT * FROM employee;
+```
+
+---
+
+# 9. CloudWatch
+
+Monitors
+
+* CPU
+* RAM
+* Logs
+* Network
+
+CLI
+
+```bash
+aws cloudwatch list-metrics
+```
+
+Create Alarm
+
+```bash
+aws cloudwatch put-metric-alarm
+```
+
+Linux
+
+View logs
+
+```bash
+tail -f /var/log/messages
+```
+
+---
+
+# 10. AWS CLI
+
+Install
+
+Linux
+
+```bash
+sudo yum install awscli
+```
+
+Configure
+
+```bash
+aws configure
+```
+
+Output
+
+```
+Access Key
+
+Secret Key
+
+Region
+```
+
+---
+
+# Bash Automation
+
+```bash
+#!/bin/bash
+
+DATE=$(date)
+
+aws s3 cp backup.sql \
+s3://company-backup/$DATE.sql
+```
+
+---
+
+# 11. Route53
+
+DNS
+
+Example
+
+```
+google.com
+
+↓
+
+142.xx.xx.xx
+```
+
+Create record
+
+```bash
+aws route53 change-resource-record-sets
+```
+
+---
+
+# 12. CloudFront
+
+CDN
+
+Without
+
+```
+India
+
+↓
+
+USA Server
+```
+
+With
+
+```
+India
+
+↓
+
+Mumbai Edge
+
+↓
+
+Fast
+```
+
+Create
+
+```bash
+aws cloudfront create-distribution
+```
+
+---
+
+# 13. AWS Lambda
+
+Serverless
+
+Example
+
+Upload Image
+
+↓
+
+Lambda
+
+↓
+
+Resize
+
+↓
+
+Store in S3
+
+Python Example
+
+```python
+def lambda_handler(event, context):
+    print("Hello AWS")
+```
+
+Deploy
+
+```bash
+zip lambda.zip lambda.py
+
+aws lambda create-function
+```
+
+---
+
+# 14. IAM
+
+Controls permissions.
+
+```
+User
+
+↓
+
+Role
+
+↓
+
+Policy
+```
+
+Create User
+
+```bash
+aws iam create-user \
+--user-name developer
+```
+
+Attach Policy
+
+```bash
+aws iam attach-user-policy \
+--user-name developer \
+--policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+```
+
+---
+
+# Linux Commands Used Daily
+
+```bash
+pwd
+ls
+cd
+mkdir
+touch
+cp
+mv
+rm
+cat
+grep
+find
+tail
+head
+chmod
+chown
+ps
+top
+kill
+systemctl
+journalctl
+crontab
+tar
+zip
+unzip
+scp
+ssh
+curl
+wget
+netstat
+ss
+ping
+traceroute
+```
+
+---
+
+# SQL Used Daily
+
+```sql
+SELECT
+
+INSERT
+
+UPDATE
+
+DELETE
+
+JOIN
+
+LEFT JOIN
+
+RIGHT JOIN
+
+GROUP BY
+
+HAVING
+
+ORDER BY
+
+LIMIT
+
+INDEX
+
+VIEW
+
+PROCEDURE
+
+TRIGGER
+
+BACKUP
+
+RESTORE
+```
+
+---
+
+# Real Industry Architecture
+
+```text
+User
+      │
+      ▼
+Route53 (DNS)
+      │
+      ▼
+CloudFront (CDN)
+      │
+      ▼
+Application Load Balancer
+      │
+ ┌────┴────┐
+ ▼         ▼
+EC2      EC2
+      │
+      ▼
+Auto Scaling
+      │
+      ▼
+Amazon RDS
+      │
+      ▼
+Amazon S3 (Images, Logs, Backups)
+      │
+      ▼
+CloudWatch (Monitoring)
+      │
+      ▼
+IAM (Security)
+```
+
+## Industry Learning Roadmap
+
+If your goal is **AWS Cloud Engineer, DevOps Engineer, or System Administrator**, learn in this order:
+
+1. Linux (Bash scripting)
+2. Networking (IP, DNS, HTTP, HTTPS, SSH)
+3. AWS IAM
+4. EC2
+5. VPC
+6. S3
+7. EBS & EFS
+8. Load Balancer
+9. Auto Scaling
+10. RDS
+11. CloudWatch
+12. Route 53
+13. CloudFront
+14. Lambda
+15. Infrastructure as Code (Terraform or AWS CloudFormation)
+16. Docker
+17. Kubernetes
+18. CI/CD (Jenkins or GitHub Actions)
+
+This progression matches the skills commonly expected for 
+entry-level to mid-level cloud and DevOps roles in the industry.
+
+
+This roadmap is **very close to what companies actually use** for Cloud Engineer, DevOps Engineer, AWS Administrator, and SRE roles. If you learn these topics with **Linux + Bash + AWS CLI + hands-on projects**, you'll be well prepared for interviews.
+
+Below is a **complete industry roadmap in Hinglish**.
+
+---
+
+# AWS + Linux Roadmap (Industry Ready)
+
+```text
+Internet
+     │
+     ▼
+ Route53
+     │
+     ▼
+ CloudFront (CDN)
+     │
+     ▼
+ Application Load Balancer
+     │
+ ┌───┴────┐
+ ▼        ▼
+EC2      EC2
+ │         │
+ └────┬────┘
+      ▼
+ Auto Scaling
+      │
+      ▼
+ RDS Database
+      │
+      ▼
+S3 + EBS + EFS
+      │
+      ▼
+CloudWatch
+      │
+      ▼
+IAM Security
+```
+
+---
+
+# 1. Linux (Bash Scripting)
+
+## Hinglish
+
+Linux AWS ka backbone hai.
+
+Almost har EC2 Linux machine hoti hai.
+
+Example
+
+```
+Developer
+
+↓
+
+SSH
+
+↓
+
+EC2 Linux
+
+↓
+
+Deploy Application
+```
+
+## Daily Linux Commands
+
+```bash
+pwd
+ls -l
+cd
+mkdir
+touch
+cp
+mv
+rm
+cat
+grep
+find
+chmod
+chown
+ps
+top
+kill
+systemctl
+journalctl
+df -h
+free -h
+```
+
+---
+
+## Bash Script
+
+Daily Backup
+
+```bash
+#!/bin/bash
+
+DATE=$(date +%F)
+
+tar -czf backup-$DATE.tar.gz /var/www/html
+
+echo "Backup Created"
+```
+
+Run
+
+```bash
+chmod +x backup.sh
+
+./backup.sh
+```
+
+Industry
+
+* Daily backup
+* Log cleanup
+* Health check
+* Monitoring
+
+---
+
+# 2. Amazon EC2
+
+## Hinglish
+
+EC2 = Virtual Computer
+
+Instead of buying a server
+
+Company rents EC2.
+
+Example
+
+```
+Laptop
+
+↓
+
+SSH
+
+↓
+
+EC2
+
+↓
+
+Spring Boot
+```
+
+---
+
+## AWS CLI
+
+Create EC2
+
+```bash
+aws ec2 run-instances \
+--image-id ami-xxxxxxxx \
+--instance-type t2.micro
+```
+
+List
+
+```bash
+aws ec2 describe-instances
+```
+
+Stop
+
+```bash
+aws ec2 stop-instances \
+--instance-ids i-123456
+```
+
+---
+
+## Security Groups
+
+Think of them as a firewall.
+
+Allow SSH
+
+```text
+Port 22
+```
+
+Allow Web
+
+```text
+80
+
+443
+```
+
+---
+
+## Monitoring
+
+```bash
+top
+
+free -h
+
+df -h
+```
+
+CloudWatch monitors CPU and network usage.
+
+---
+
+# 3. Amazon VPC
+
+VPC = Private Network
+
+Example
+
+```
+AWS
+
+↓
+
+VPC
+
+↓
+
+Public Subnet
+
+↓
+
+Private Subnet
+```
+
+Public
+
+```
+Internet Accessible
+```
+
+Private
+
+```
+Database
+```
+
+---
+
+Create VPC
+
+```bash
+aws ec2 create-vpc \
+--cidr-block 10.0.0.0/16
+```
+
+Create subnet
+
+```bash
+aws ec2 create-subnet \
+--cidr-block 10.0.1.0/24
+```
+
+---
+
+# 4. Amazon S3
+
+Cloud Storage
+
+Stores
+
+* Images
+* Videos
+* Logs
+* Backup
+* PDFs
+
+---
+
+Create bucket
+
+```bash
+aws s3 mb s3://company-data
+```
+
+Upload
+
+```bash
+aws s3 cp photo.jpg s3://company-data
+```
+
+List
+
+```bash
+aws s3 ls
+```
+
+Download
+
+```bash
+aws s3 cp s3://company-data/photo.jpg .
+```
+
+---
+
+Versioning
+
+Old file never deleted.
+
+```
+Version1
+
+↓
+
+Version2
+
+↓
+
+Restore
+```
+
+---
+
+Lifecycle
+
+Example
+
+```
+30 Days
+
+↓
+
+Move to Glacier
+
+↓
+
+Save Cost
+```
+
+---
+
+# 5. Amazon EBS
+
+EBS = Hard Disk
+
+```
+EC2
+
+↓
+
+EBS
+```
+
+Snapshot
+
+```bash
+aws ec2 create-snapshot \
+--volume-id vol-12345
+```
+
+Industry
+
+Night backup.
+
+---
+
+# 6. Amazon EFS
+
+Shared Drive
+
+```
+EC2
+
+↓
+
+EFS
+
+↓
+
+EC2
+```
+
+Mount
+
+```bash
+sudo mount -t efs fs-123:/ /data
+```
+
+Useful for
+
+* WordPress
+* PHP
+* Shared Upload Folder
+
+---
+
+# 7. Load Balancer
+
+Without
+
+```
+10000 Users
+
+↓
+
+One EC2
+
+↓
+
+Crash
+```
+
+With ALB
+
+```
+Users
+
+↓
+
+ALB
+
+↓
+
+EC2
+
+EC2
+
+EC2
+```
+
+Create
+
+```bash
+aws elbv2 create-load-balancer
+```
+
+---
+
+# 8. Auto Scaling
+
+Traffic increases
+
+↓
+
+Automatically
+
+Launch EC2
+
+Traffic decreases
+
+↓
+
+Terminate EC2
+
+Create
+
+```bash
+aws autoscaling create-auto-scaling-group
+```
+
+---
+
+# 9. Amazon RDS
+
+Managed Database
+
+Supports
+
+* MySQL
+* PostgreSQL
+* Oracle
+
+Connect
+
+```bash
+mysql -h endpoint \
+-u admin \
+-p
+```
+
+SQL
+
+```sql
+CREATE DATABASE company;
+
+USE company;
+
+CREATE TABLE employee
+(
+id INT,
+name VARCHAR(30)
+);
+
+INSERT INTO employee
+VALUES
+(1,'Rahul');
+
+SELECT * FROM employee;
+```
+
+Backup
+
+Automatic.
+
+Restore
+
+One click.
+
+---
+
+# 10. CloudWatch
+
+Monitors
+
+CPU
+
+Memory
+
+Logs
+
+Disk
+
+Network
+
+List metrics
+
+```bash
+aws cloudwatch list-metrics
+```
+
+Alarm
+
+```bash
+aws cloudwatch put-metric-alarm
+```
+
+---
+
+# 11. AWS CLI
+
+Configure
+
+```bash
+aws configure
+```
+
+Example
+
+```text
+Access Key
+
+Secret Key
+
+Region
+
+Output=json
+```
+
+Automation
+
+```bash
+#!/bin/bash
+
+aws s3 sync \
+/backup \
+s3://company-backup
+```
+
+---
+
+# 12. Route53
+
+DNS
+
+```
+google.com
+
+↓
+
+142.xx.xx.xx
+```
+
+Routing
+
+* Simple
+* Weighted
+* Failover
+* Geolocation
+
+Health Check
+
+Automatically route traffic if a server is down.
+
+---
+
+# 13. CloudFront
+
+CDN
+
+Without
+
+```
+India
+
+↓
+
+USA
+
+↓
+
+Slow
+```
+
+With
+
+```
+India
+
+↓
+
+Mumbai Edge
+
+↓
+
+Fast
+```
+
+Used for
+
+* CSS
+* JS
+* Images
+* Videos
+
+---
+
+# 14. AWS Lambda
+
+Serverless
+
+Example
+
+```
+Upload Image
+
+↓
+
+Lambda
+
+↓
+
+Resize
+
+↓
+
+Store in S3
+```
+
+Python
+
+```python
+def lambda_handler(event, context):
+    return {
+        "statusCode":200,
+        "body":"Hello AWS"
+    }
+```
+
+Deploy
+
+```bash
+zip lambda.zip lambda.py
+```
+
+---
+
+# 15. IAM
+
+Security
+
+```
+User
+
+↓
+
+Group
+
+↓
+
+Role
+
+↓
+
+Policy
+```
+
+Create user
+
+```bash
+aws iam create-user \
+--user-name developer
+```
+
+Attach S3 policy
+
+```bash
+aws iam attach-user-policy \
+--user-name developer \
+--policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+```
+
+---
+
+# Project 1
+
+## Multi-tier Web Application
+
+```
+Internet
+
+↓
+
+Route53
+
+↓
+
+CloudFront
+
+↓
+
+Load Balancer
+
+↓
+
+EC2
+
+↓
+
+RDS
+
+↓
+
+S3
+```
+
+Skills
+
+* EC2
+* RDS
+* VPC
+* Security Groups
+* IAM
+
+---
+
+# Project 2
+
+## Automated Backup
+
+Bash
+
+```bash
+#!/bin/bash
+
+DATE=$(date +%F)
+
+mysqldump -u root -p company \
+> db.sql
+
+tar -czf backup.tar.gz db.sql
+
+aws s3 cp backup.tar.gz \
+s3://company-backup/
+```
+
+Run every day
+
+```bash
+crontab -e
+```
+
+```
+0 2 * * * /home/ec2-user/backup.sh
+```
+
+---
+
+# Project 3
+
+## Auto Scaling Website
+
+```
+Users
+
+↓
+
+ALB
+
+↓
+
+Auto Scaling
+
+↓
+
+EC2
+
+↓
+
+CloudWatch
+```
+
+If CPU > 70%
+
+↓
+
+Launch new EC2.
+
+---
+
+# Project 4
+
+## Static Website
+
+```
+HTML
+
+↓
+
+S3 Bucket
+
+↓
+
+CloudFront
+
+↓
+
+Route53
+
+↓
+
+Users
+```
+
+Upload
+
+```bash
+aws s3 sync website/ s3://mywebsite
+```
+
+---
+
+# Industry Interview Questions
+
+* Difference between EC2 and Lambda?
+* Difference between EBS and EFS?
+* Difference between ALB and NLB?
+* Difference between Security Group and NACL?
+* Difference between S3 Standard and Glacier?
+* What happens when you type `www.google.com` in the browser?
+* How does Auto Scaling work?
+* How do you restore an RDS database?
+* How do you secure an EC2 instance?
+* How do you automate backups using Bash and AWS CLI?
+
+## 30-Day Learning Plan
+
+| Week | Focus                                                                         |
+| ---- | ----------------------------------------------------------------------------- |
+| 1    | Linux, Bash, AWS CLI                                                          |
+| 2    | EC2, IAM, VPC, Security Groups                                                |
+| 3    | S3, EBS, EFS, RDS, CloudWatch                                                 |
+| 4    | Load Balancer, Auto Scaling, Route 53, CloudFront, Lambda + Hands-on Projects |
+
+If you can **create all four projects yourself**, you'll have practical experience with the services and workflows 
+commonly discussed in AWS Cloud Engineer and DevOps interviews.
+
+
+
+This is an excellent roadmap. If you complete it properly, you'll be ready for **AWS Cloud**, **DevOps**, **Linux Administrator**, and many **System Engineer** roles.
+
+I'll explain it in **Hinglish** with **industry examples**, **Linux commands**, **Bash scripts**, and **mini projects**.
+
+---
+
+
+
+
+
+# Module 1: Linux & Operating System Fundamentals (18 Days)
+
+## Day 1–2: Linux Command Line Interface (CLI)
+
+### What is Linux?
+
+Linux ek **Operating System (OS)** hai, jaise Windows.
+
+Industry mein:
+
+* AWS EC2
+* Azure VM
+* Google Cloud VM
+* Docker Containers
+
+mostly Linux use karte hain.
+
+Example:
+
+```
+Windows
+|
+Desktop
+|
+Mouse
+
+Linux
+|
+Terminal
+|
+Commands
+```
+
+---
+
+## Important Linux Commands
+
+### Check current directory
+
+```bash
+pwd
+```
+
+Output
+
+```
+/home/ec2-user
+```
+
+---
+
+### List files
+
+```bash
+ls
+```
+
+Detailed
+
+```bash
+ls -l
+```
+
+Hidden files
+
+```bash
+ls -la
+```
+
+---
+
+### Change directory
+
+```bash
+cd Documents
+```
+
+Back
+
+```bash
+cd ..
+```
+
+Home
+
+```bash
+cd ~
+```
+
+---
+
+### Create folder
+
+```bash
+mkdir project
+```
+
+Nested folders
+
+```bash
+mkdir -p aws/scripts/logs
+```
+
+---
+
+### Create file
+
+```bash
+touch test.txt
+```
+
+---
+
+### Copy
+
+```bash
+cp file1.txt backup.txt
+```
+
+Folder
+
+```bash
+cp -r project backup
+```
+
+---
+
+### Move
+
+```bash
+mv old.txt new.txt
+```
+
+---
+
+### Delete
+
+```bash
+rm file.txt
+```
+
+Directory
+
+```bash
+rm -rf folder
+```
+
+⚠ Never run:
+
+```bash
+rm -rf /
+```
+
+---
+
+# Mini Project 1
+
+Create this structure
+
+```
+Company
+│
+├── HR
+├── IT
+├── Sales
+└── Backup
+```
+
+Commands
+
+```bash
+mkdir Company
+cd Company
+
+mkdir HR
+mkdir IT
+mkdir Sales
+mkdir Backup
+```
+
+---
+
+# Day 3–4: File System Management
+
+Linux File System
+
+```
+/
+
+├── home
+├── etc
+├── var
+├── usr
+├── opt
+├── boot
+├── tmp
+```
+
+### Important directories
+
+| Folder | Purpose            |
+| ------ | ------------------ |
+| /home  | User files         |
+| /etc   | Configuration      |
+| /var   | Logs               |
+| /tmp   | Temporary files    |
+| /usr   | Installed software |
+| /boot  | Boot files         |
+
+---
+
+### Disk usage
+
+```bash
+df -h
+```
+
+---
+
+### Folder size
+
+```bash
+du -sh *
+```
+
+---
+
+### Find files
+
+```bash
+find . -name "*.log"
+```
+
+---
+
+### Search text
+
+```bash
+grep ERROR app.log
+```
+
+---
+
+### Hard Link
+
+```bash
+ln file.txt hardlink
+```
+
+---
+
+### Soft Link
+
+```bash
+ln -s file.txt shortcut
+```
+
+Industry uses symbolic links heavily.
+
+---
+
+# Day 5–6: User & Group Management
+
+Create user
+
+```bash
+sudo useradd rahul
+```
+
+Password
+
+```bash
+sudo passwd rahul
+```
+
+Delete
+
+```bash
+sudo userdel rahul
+```
+
+---
+
+Create group
+
+```bash
+sudo groupadd developers
+```
+
+Add user
+
+```bash
+sudo usermod -aG developers rahul
+```
+
+Check groups
+
+```bash
+groups rahul
+```
+
+---
+
+Grant sudo
+
+```bash
+sudo visudo
+```
+
+---
+
+Mini Project
+
+Create
+
+```
+Users
+
+John
+Alice
+Bob
+```
+
+Group
+
+```
+Developers
+```
+
+Add all users into Developers group.
+
+---
+
+# Day 7–8: Process Management
+
+Running processes
+
+```bash
+ps
+```
+
+All
+
+```bash
+ps -ef
+```
+
+Live monitoring
+
+```bash
+top
+```
+
+or
+
+```bash
+htop
+```
+
+Kill process
+
+```bash
+kill PID
+```
+
+Force kill
+
+```bash
+kill -9 PID
+```
+
+Background
+
+```bash
+sleep 100 &
+```
+
+Jobs
+
+```bash
+jobs
+```
+
+Bring foreground
+
+```bash
+fg
+```
+
+---
+
+Mini Project
+
+Run
+
+```bash
+sleep 1000 &
+```
+
+Find PID
+
+Kill it.
+
+---
+
+# Day 9–10: VIM Editor
+
+Open
+
+```bash
+vim file.txt
+```
+
+Modes
+
+```
+Normal
+
+Insert
+
+Visual
+
+Command
+```
+
+Insert
+
+```
+i
+```
+
+Save
+
+```
+:w
+```
+
+Quit
+
+```
+:q
+```
+
+Save + Quit
+
+```
+:wq
+```
+
+---
+
+Mini Project
+
+Create
+
+```
+employee.txt
+```
+
+Store
+
+```
+ID Name Salary
+```
+
+---
+
+# Day 11–12: System Administration
+
+Install package
+
+Ubuntu
+
+```bash
+sudo apt install nginx
+```
+
+Amazon Linux
+
+```bash
+sudo yum install nginx
+```
+
+Start service
+
+```bash
+sudo systemctl start nginx
+```
+
+Enable
+
+```bash
+sudo systemctl enable nginx
+```
+
+Status
+
+```bash
+systemctl status nginx
+```
+
+---
+
+Network
+
+IP
+
+```bash
+ip addr
+```
+
+Ping
+
+```bash
+ping google.com
+```
+
+Ports
+
+```bash
+ss -tuln
+```
+
+---
+
+Mini Project
+
+Install
+
+```
+Apache
+
+or
+
+Nginx
+```
+
+Host simple webpage.
+
+---
+
+# Day 13–15: Bash Scripting
+
+Hello World
+
+```bash
+#!/bin/bash
+
+echo "Hello World"
+```
+
+Run
+
+```bash
+chmod +x script.sh
+
+./script.sh
+```
+
+---
+
+Variables
+
+```bash
+NAME="Rahul"
+
+echo $NAME
+```
+
+---
+
+If
+
+```bash
+if [ 5 -gt 3 ]
+then
+echo OK
+fi
+```
+
+---
+
+Loop
+
+```bash
+for i in {1..5}
+do
+echo $i
+done
+```
+
+---
+
+Read input
+
+```bash
+read NAME
+
+echo $NAME
+```
+
+---
+
+Mini Project
+
+Backup Script
+
+```bash
+#!/bin/bash
+
+DATE=$(date +%F)
+
+tar -czf backup-$DATE.tar.gz /home/ec2-user/project
+```
+
+---
+
+# Day 16: Cron Jobs
+
+Open cron
+
+```bash
+crontab -e
+```
+
+Every day
+
+```bash
+0 2 * * * /home/ec2-user/backup.sh
+```
+
+Industry
+
+Automatic backups
+
+Log cleanup
+
+Reports
+
+---
+
+# Day 17: System Monitoring
+
+Memory
+
+```bash
+free -h
+```
+
+CPU
+
+```bash
+top
+```
+
+Disk
+
+```bash
+df -h
+```
+
+Load
+
+```bash
+uptime
+```
+
+Logs
+
+```bash
+tail -f /var/log/messages
+```
+
+---
+
+# Day 18: Final Project
+
+## Linux System Administration Project
+
+### Folder Structure
+
+```
+Project
+
+Scripts
+
+Logs
+
+Backup
+
+Reports
+```
+
+### Bash Script
+
+```bash
+#!/bin/bash
+
+DATE=$(date +%F)
+
+mkdir -p Backup
+
+tar -czf Backup/project-$DATE.tar.gz Project
+
+echo "Backup Completed"
+
+df -h > Reports/disk.txt
+
+free -h > Reports/memory.txt
+
+ps -ef > Reports/process.txt
+```
+
+Run
+
+```bash
+chmod +x backup.sh
+
+./backup.sh
+```
+
+---
+
+# Commands You Must Know (Top 40)
+
+```
+pwd
+ls
+cd
+mkdir
+rmdir
+touch
+cp
+mv
+rm
+cat
+head
+tail
+grep
+find
+sort
+uniq
+wc
+chmod
+chown
+ln
+ps
+top
+kill
+jobs
+fg
+bg
+free
+df
+du
+tar
+zip
+unzip
+ssh
+scp
+curl
+wget
+ping
+ip
+ss
+systemctl
+journalctl
+crontab
+vim
+```
+
+---
+
+# Industry Skills Covered
+
+By the end of these 18 days, you'll be able to:
+
+* Work comfortably on Linux servers (including AWS EC2).
+* Manage files, users, permissions, and services.
+* Write Bash scripts to automate repetitive tasks.
+* Schedule jobs using `cron`.
+* Monitor CPU, memory, disk, and processes.
+* Troubleshoot basic Linux server issues.
+
+These are foundational skills expected from 
+**Cloud Engineers, DevOps Engineers, Linux Administrators, and Site Reliability Engineers (SREs)**.
+
+
+
+
